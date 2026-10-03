@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MiniMelts - نظام الحضور والجرد</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+<body>
+
+<!-- =========================================================
+     LOGIN
+========================================================= -->
+
+<section
+    id="loginScreen"
+    class="login-screen"
+>
+
+    <div class="login-box">
+
+        <div class="login-logo">
+            <img
+                src="logo.webp"
+                alt="MiniMelts"
+            >
+        </div>
+
+        <h1>
+            MiniMelts
+        </h1>
+
+        <p class="login-subtitle">
+            نظام الحضور والانصراف والجرد
+        </p>
+
+        <form id="loginForm">
+
+            <div class="input-group">
+
+                <label for="loginNumber">
+                    الرمز الوظيفي
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="fa-solid fa-id-card"></i>
+
+                    <input
+                        type="text"
+                        id="loginNumber"
+                        placeholder="أدخل الرمز الوظيفي"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label for="loginPassword">
+                    كلمة المرور
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="أدخل كلمة المرور"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        id="togglePassword"
+                        class="password-toggle"
+                        aria-label="إظهار كلمة المرور"
+                    >
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="login-button"
+            >
+                <i class="fa-solid fa-right-to-bracket"></i>
+                تسجيل الدخول
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     APPLICATION
+========================================================= -->
+
+<div
+    id="app"
+    class="app hidden"
+>
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <img
+                src="logo.webp"
+                alt="MiniMelts"
+            >
+
+            <div>
+
+                <strong>
+                    MiniMelts
+                </strong>
+
+                <span>
+                    نظام الحضور والجرد
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-user">
+
+            <div class="sidebar-avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div>
+
+                <strong id="sidebarUserName">
+                    -
+                </strong>
+
+                <span id="sidebarUserRole">
+                    -
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <button
+                type="button"
+                class="nav-item active-page"
+                data-page="home"
+            >
+                <i class="fa-solid fa-house"></i>
+                <span>الرئيسية</span>
+            </button>
+
+
+            <button
+                type="button"
+                class="nav-item"
+                data-page="attendance"
+                id="attendanceNav"
+            >
+                <i class="fa-solid fa-clock"></i>
+                <span>الحضور والانصراف</span>
+            </button>
+
+
+            <button
+                type="button"
+                class="nav-item"
+                data-page="leave"
+            >
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>الإجازات</span>
+            </button>
+
+
+            <button
+                type="button"
+                class="nav-item"
+                data-page="complaints"
+            >
+                <i class="fa-solid fa-comments"></i>
+                <span>الشكاوى والمقترحات</span>
+            </button>
+
+
+            <button
+                type="button"
+                class="nav-item"
+                data-page="reports"
+                id="reportsNav"
+            >
+                <i class="fa-solid fa-chart-column"></i>
+                <span>التقارير والجرد</span>
+            </button>
+
+        </nav>
+
+
+        <button
+            type="button"
+            id="logoutBtn"
+            class="logout-button"
+        >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            تسجيل الخروج
+        </button>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h2 id="pageTitle">
+                    الرئيسية
+                </h2>
+
+                <p>
+                    <span id="todayText">-</span>
+                    <span class="topbar-separator">•</span>
+                    <span id="liveClock">00:00:00</span>
+                </p>
+
+            </div>
+
+
+            <div class="topbar-user">
+
+                <span id="topUserName">
+                    -
+                </span>
+
+                <div class="top-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             HOME
+        ================================================== -->
+
+        <section
+            id="page-home"
+            class="page"
+        >
+
+            <div class="welcome-card">
+
+                <div>
+
+                    <span>
+                        أهلاً وسهلاً بك
+                    </span>
+
+                    <h1>
+                        <span id="welcomeName">
+                            -
+                        </span>
+                    </h1>
+
+                    <p>
+                        نتمنى لك يوم عمل موفق ومنظم.
+                    </p>
+
+                </div>
+
+                <div class="welcome-icon">
+
+                    <i class="fa-solid fa-building"></i>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            ساعات اليوم
+                        </span>
+
+                        <strong id="homeTodayHours">
+                            0 ساعة
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            أيام الشهر
+                        </span>
+
+                        <strong id="homeMonthDays">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon orange">
+                        <i class="fa-solid fa-calendar"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            الإجازات السنوية
+                        </span>
+
+                        <strong id="homeAnnualLeave">
+                            14
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon red">
+                        <i class="fa-solid fa-notes-medical"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            الإجازات المرضية
+                        </span>
+
+                        <strong id="homeSickLeave">
+                            14
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="content-card">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h3>
+                            حالة الدوام اليوم
+                        </h3>
+
+                        <p>
+                            آخر حالة مسجلة لحضورك اليوم
+                        </p>
+
+                    </div>
+
+                    <i class="fa-solid fa-user-clock section-title-icon"></i>
+
+                </div>
+
+                <div
+                    id="homeAttendanceStatus"
+                    class="today-status"
+                >
+                    لم يتم تسجيل الحضور اليوم.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ATTENDANCE
+        ================================================== -->
+
+        <section
+            id="page-attendance"
+            class="page hidden"
+        >
+
+            <div
+                id="attendanceControls"
+                class="attendance-action-card"
+            >
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h3>
+                            تسجيل الحضور والانصراف
+                        </h3>
+
+                        <p>
+                            تسجيل الحضور مرة واحدة والانصراف مرة واحدة يومياً.
+                        </p>
+
+                    </div>
+
+                    <div class="live-clock">
+                        <span id="liveClockAttendance">
+                            الوقت الحالي
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="attendanceBranchCard"
+                    class="attendance-controls"
+                >
+
+                    <div class="field">
+
+                        <label for="attendanceBranch">
+                            الفرع
+                        </label>
+
+                        <select
+                            id="attendanceBranch"
+                            class="form-control"
+                        >
+                            <option value="">
+                                اختر الفرع
+                            </option>
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="checkInBtn"
+                        class="btn primary"
+                        onclick="checkIn()"
+                    >
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        تسجيل الحضور
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="checkOutBtn"
+                        class="btn danger"
+                        onclick="checkOut()"
+                    >
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        تسجيل الانصراف
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="attendanceActionCard"
+                class="content-card"
+            >
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h3>
+                            ملخص اليوم
+                        </h3>
+
+                        <p>
+                            أوقات الدخول والخروج وساعات العمل
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="ownAttendanceSummary"
+                    class="card-grid attendance-summary-grid"
+                ></div>
+
+            </div>
+
+
+            <div
+                id="attendanceRegisterSection"
+                class="table-card"
+            >
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h3>
+                            سجل الحضور
+                        </h3>
+
+                        <p>
+                            السجلات المسجلة في النظام
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>الاسم</th>
+                                <th>الوظيفة</th>
+                                <th>التاريخ</th>
+                                <th>الفرع</th>
+                                <th>الدخول</th>
+                                <th>الخروج</th>
+                                <th>ساعات العمل</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="attendanceTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="supervisorAttendanceSection"
+                class="table-card hidden"
+            >
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h3>
+                            تفاصيل حضور الموظفين والسوبرفايزر
+                        </h3>
+
+                        <p>
+                            أوقات الدخول والخروج وساعات العمل لليوم الحالي
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>الاسم</th>
+                                <th>الوظيفة</th>
+                                <th>الفرع</th>
+                                <th>الدخول</th>
+                                <th>الخروج</th>
+                                <th>ساعات العمل</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="supervisorAttendanceBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             LEAVES
+        ================================================== -->
+
+        <section
+            id="page-leave"
+            class="page hidden"
+        >
+
+            <div class="leave-balance-grid">
+
+                <div class="leave-balance annual">
+
+                    <div class="leave-icon">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            الرصيد السنوي
+                        </span>
+
+                        <strong id="annualRemaining">
+                            14
+                        </strong>
+
+                        <small>
+                            يوم متبقي
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="leave-balance sick">
+
+                    <div class="leave-icon">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            الرصيد المرضي
+                        </span>
+
+                        <strong id="sickRemaining">
+                            14
+                        </strong>
+
+                        <small>
+                            يوم متبقي
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="leaveFormCard"
+                class="content-card"
+            >
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h3>
+                            طلب إجازة
+                        </h3>
+
+                        <p>
+                            الإجازة تكون ليوم واحد فقط.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form id="leaveForm">
+
+                    <div class="form-grid">
+
+                        <div class="field">
+
+                            <label for="leaveType">
+                                نوع الإجازة
+                            </label>
+
+                            <select
+                                id="leaveType"
+                                class="form-control"
+                                required
+                            >
+                                <option value="">
+                                    اختر النوع
+                                </option>
+
+                                <option value="annual">
+                                    إجازة سنوية
+                                </option>
+
+                                <option value="sick">
+                                    إجازة مرضية
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="leaveDate">
+                                تاريخ الإجازة
+                            </label>
+
+                            <input
+                                type="date"
+                                id="leaveDate"
+                                name="leaveDate"
+                                class="form-control"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="field full">
+
+                            <label for="leaveReason">
+                                السبب
+                            </label>
+
+                            <textarea
+                                id="leaveReason"
+                                class="form-control"
+                                rows="4"
+                                placeholder="اكتب سبب الإجازة..."
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn primary"
+                    >
+                        <i class="fa-solid fa-paper-plane"></i>
+                        إرسال طلب الإجازة
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="table-card">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h3>
+                            طلبات الإجازات
+                        </h3>
+
+                        <p>
+                            متابعة حالة طلبات الإجازات
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>الموظف</th>
+                                <th>النوع</th>
+                                <th>التاريخ</th>
+                                <th>الأيام</th>
+                                <th>السبب</th>
+                                <th>الحالة</th>
+                                <th>تاريخ الطلب</th>
+                                <th>الإجراء</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="leaveTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             REPORTS
+        ================================================== -->
+
+        <section
+            id="page-reports"
+            class="page hidden"
+        >
+
+            <div id="reportsContent"></div>
+
+        </section>
+
+
+        <!-- =================================================
+             COMPLAINTS
+        ================================================== -->
+
+        <section
+            id="page-complaints"
+            class="page hidden"
+        >
+
+            <div class="content-card">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h3>
+                            الشكاوى والمقترحات
+                        </h3>
+
+                        <p>
+                            إرسال الملاحظات ومتابعة الردود.
+                        </p>
+
+                    </div>
+
+                    <i class="fa-solid fa-comments section-title-icon"></i>
+
+                </div>
+
+
+                <form id="complaintForm">
+
+                    <div class="field full">
+
+                        <label for="complaintText">
+                            الشكوى أو المقترح
+                        </label>
+
+                        <textarea
+                            id="complaintText"
+                            class="form-control"
+                            rows="5"
+                            placeholder="اكتب الشكوى أو المقترح هنا..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+                    <br>
+
+                    <button
+                        type="submit"
+                        class="btn primary"
+                    >
+                        <i class="fa-solid fa-paper-plane"></i>
+                        إرسال
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="table-card">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h3>
+                            سجل الشكاوى والمقترحات
+                        </h3>
+
+                        <p>
+                            متابعة الشكاوى والردود
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>الموظف</th>
+                                <th>الشكوى / المقترح</th>
+                                <th>الرد</th>
+                                <th>الإجراء</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="complaintsTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div id="toast"></div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
